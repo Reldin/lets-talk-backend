@@ -5,6 +5,7 @@ import { DataSource } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { Category } from './posts/dao/category.entity';
+import { Topic } from './posts/dao/topic.entity';
 import { PostsModule } from './posts/posts.module';
 
 @Module({
@@ -26,7 +27,7 @@ import { PostsModule } from './posts/posts.module';
           username: configService.get('DB_USERNAME'),
           password: configService.get('DB_PASSWORD'),
           database: configService.get('DB_DATABASE'),
-          entities: [Category],
+          entities: [Category, Topic],
         };
       },
     }),
