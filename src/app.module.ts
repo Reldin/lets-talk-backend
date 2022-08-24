@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { Category } from './posts/dao/category.entity';
 import { Topic } from './posts/dao/topic.entity';
 import { PostsModule } from './posts/posts.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { PostsModule } from './posts/posts.module';
         };
       },
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
