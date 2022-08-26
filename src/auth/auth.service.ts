@@ -1,9 +1,14 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AppUser } from './dao/appuser.entity';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import * as bcrypt from 'bcrypt';
+import { AuthLoginDto } from './dto/auth-login.dto';
 
 @Injectable()
 export class AuthService {
@@ -29,6 +34,17 @@ export class AuthService {
     });
 
     await this.appUserRepository.save(user);
+  }
+
+  async signIn(authLoginDto: AuthLoginDto): Promise<string> {
+    const { username, password } = authLoginDto;
+
+    const foundUser = await this.findUser(username);
+    if (foundUser && (await bcrypt.compare(password, foundUser.password))) {
+      return 'Success';
+    } else {
+      throw new UnauthorizedException('Failed to login');
+    }
   }
 
   private async findUser(username: string): Promise<AppUser | null> {
