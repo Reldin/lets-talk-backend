@@ -9,12 +9,15 @@ import { AppUser } from './dao/appuser.entity';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import * as bcrypt from 'bcrypt';
 import { AuthLoginDto } from './dto/auth-login.dto';
+import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from './jwt-payload.interface';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(AppUser)
     private appUserRepository: Repository<AppUser>,
+    private jwtService: JwtService,
   ) {}
 
   async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
@@ -36,12 +39,15 @@ export class AuthService {
     await this.appUserRepository.save(user);
   }
 
-  async signIn(authLoginDto: AuthLoginDto): Promise<string> {
+  async signIn(authLoginDto: AuthLoginDto): Promise<{ accessToken: string }> {
     const { username, password } = authLoginDto;
 
     const foundUser = await this.findUser(username);
     if (foundUser && (await bcrypt.compare(password, foundUser.password))) {
-      return 'Success';
+      const payload: JwtPayload = { username };
+      const accessToken = await this.jwtService.sign(payload);
+
+      return { accessToken };
     } else {
       throw new UnauthorizedException('Failed to login');
     }
