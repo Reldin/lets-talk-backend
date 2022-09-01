@@ -6,9 +6,11 @@ import { AppUser } from './dao/appuser.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
+    ConfigModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -18,10 +20,9 @@ import { JwtModule } from '@nestjs/jwt';
         signOptions: { expiresIn: 3600 },
       }),
     }),
-    ConfigModule,
     TypeOrmModule.forFeature([AppUser]),
   ],
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
   exports: [JwtModule, PassportModule],
 })

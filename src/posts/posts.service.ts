@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { AppUser } from 'src/auth/dao/appuser.entity';
 import { Repository } from 'typeorm';
 import { Category } from './dao/category.entity';
 import { Topic } from './dao/topic.entity';
@@ -51,5 +52,10 @@ export class PostsService {
     });
     console.log('Topics ' + JSON.stringify(topics));
     return topics;
+  }
+
+  async deleteCategoryTopic(id: number, user: AppUser): Promise<void> {
+    console.log(JSON.stringify(user) + '' + id);
+    this.topicRepository.delete({ id });
   }
 }

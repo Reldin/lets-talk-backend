@@ -1,13 +1,18 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from 'src/auth/auth.module';
 import { Category } from './dao/category.entity';
 import { Topic } from './dao/topic.entity';
 import { PostsController } from './posts.controller';
 import { PostsService } from './posts.service';
 
 @Module({
-  imports: [ConfigModule, TypeOrmModule.forFeature([Category, Topic])],
+  imports: [
+    ConfigModule,
+    TypeOrmModule.forFeature([Category, Topic]),
+    AuthModule,
+  ],
   controllers: [PostsController],
   providers: [PostsService],
 })
