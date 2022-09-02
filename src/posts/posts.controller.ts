@@ -40,9 +40,6 @@ export class PostsController {
     @Param('id') id: number,
     @GetUser() user: AppUser,
   ): Promise<void> {
-    // console.log(req.headers['authorization']);
-    // console.log(req);
-    console.log(user);
     return this.postsService.deleteCategoryTopic(id, user);
   }
 }

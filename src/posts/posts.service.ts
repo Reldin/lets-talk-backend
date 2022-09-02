@@ -13,6 +13,8 @@ export class PostsService {
     private categoryRepository: Repository<Category>,
     @InjectRepository(Topic)
     private topicRepository: Repository<Topic>,
+    @InjectRepository(AppUser)
+    private appUserRepository: Repository<AppUser>,
   ) {}
 
   async getAllCategories(): Promise<Category[]> {
@@ -31,7 +33,6 @@ export class PostsService {
 
   async getCategoryTopics(categoryId: number): Promise<getCategoryTopics[]> {
     const topics: getCategoryTopics[] = [];
-
     const found = await this.topicRepository
       .createQueryBuilder('topic')
       .leftJoinAndSelect('topic.category', 'category')
@@ -53,9 +54,26 @@ export class PostsService {
     console.log('Topics ' + JSON.stringify(topics));
     return topics;
   }
-
+  /**
+   * Deletes a topic in a category by given id.
+   * Checks if user that requested the deletion owns that topic.
+   * @param id Id of the topic from the frontend
+   * @param user get-user decorator "fetches" the AppUser entity automatically
+   */
   async deleteCategoryTopic(id: number, user: AppUser): Promise<void> {
-    console.log(JSON.stringify(user) + '' + id);
+    const parsedUser: AppUser = JSON.parse(JSON.stringify(user));
+
+    const foundTopicWithUserId = await this.topicRepository
+      .createQueryBuilder('topic')
+      .where('topic.appUserId = :appUserId AND topic.id = :id', {
+        appUserId: parsedUser.id,
+        id,
+      })
+      .getOne();
+
+    if (!foundTopicWithUserId) {
+      throw new NotFoundException();
+    }
     this.topicRepository.delete({ id });
   }
 }

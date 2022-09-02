@@ -1,3 +1,4 @@
+import { AppUser } from 'src/auth/dao/appuser.entity';
 import {
   Column,
   Entity,
@@ -18,7 +19,14 @@ export class Topic {
   @Column()
   categoryId: number;
 
+  @Column()
+  appUserId: number;
+
   @ManyToOne(() => Category, (category) => category.topics)
   @JoinColumn({ name: 'categoryId' })
   category: Category;
+
+  @ManyToOne(() => AppUser, (appUser) => appUser.topics)
+  @JoinColumn({ name: 'appUserId' })
+  appUser: AppUser;
 }
