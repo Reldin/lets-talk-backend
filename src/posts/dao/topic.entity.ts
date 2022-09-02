@@ -4,9 +4,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Category } from './category.entity';
+import { Post } from './post.entity';
 
 @Entity({ name: 'topic' })
 export class Topic {
@@ -29,4 +31,7 @@ export class Topic {
   @ManyToOne(() => AppUser, (appUser) => appUser.topics)
   @JoinColumn({ name: 'appUserId' })
   appUser: AppUser;
+
+  @OneToMany(() => Post, (post) => post.topic)
+  posts: Post;
 }

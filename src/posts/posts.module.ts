@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from 'src/auth/auth.module';
 import { AppUser } from 'src/auth/dao/appuser.entity';
 import { Category } from './dao/category.entity';
+import { Post } from './dao/post.entity';
 import { Topic } from './dao/topic.entity';
 import { PostsController } from './posts.controller';
 import { PostsService } from './posts.service';
@@ -11,7 +12,7 @@ import { PostsService } from './posts.service';
 @Module({
   imports: [
     ConfigModule,
-    TypeOrmModule.forFeature([Category, Topic, AppUser]),
+    TypeOrmModule.forFeature([Category, Topic, AppUser, Post]),
     AuthModule,
   ],
   controllers: [PostsController],
