@@ -4,6 +4,8 @@ import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -30,4 +32,14 @@ export class Post {
   @ManyToOne(() => Topic, (topic) => topic.posts)
   @JoinColumn({ name: 'topicId' })
   topic: Topic;
+
+  @ManyToMany(() => AppUser, (appUser) => appUser.savedPosts, {})
+  @JoinTable({
+    name: 'SavedPost',
+    joinColumn: {
+      name: 'postId',
+      referencedColumnName: 'id',
+    },
+  })
+  appUsers: Array<AppUser>;
 }

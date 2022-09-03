@@ -49,4 +49,9 @@ export class PostsController {
   getTopicPosts(): Promise<Post[]> {
     return this.postsService.getTopicPosts();
   }
+
+  @Get('/test')
+  getSavedPosts(): Promise<any> {
+    return this.postsService.getSavedPosts();
+  }
 }

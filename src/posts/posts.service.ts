@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { createQuery } from 'mysql2/typings/mysql/lib/Connection';
 import { AppUser } from 'src/auth/dao/appuser.entity';
-import { Repository } from 'typeorm';
+import { Any, Repository } from 'typeorm';
 import { Category } from './dao/category.entity';
 import { Post } from './dao/post.entity';
 import { Topic } from './dao/topic.entity';
@@ -97,5 +97,16 @@ export class PostsService {
     const posts = await this.postRepository.find();
     console.log(posts);
     return posts;
+  }
+
+  async getSavedPosts(): Promise<any> {
+    const found = await this.appUserRepository
+      .createQueryBuilder('appuser')
+      .leftJoinAndSelect('appuser.savedPosts', 'post')
+      .where('appuser.id = :id', { id: 1 })
+      .getMany();
+
+    console.log(found);
+    return found;
   }
 }

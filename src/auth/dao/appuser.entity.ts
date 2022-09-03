@@ -1,7 +1,14 @@
 import { Exclude } from 'class-transformer';
 import { Post } from 'src/posts/dao/post.entity';
 import { Topic } from 'src/posts/dao/topic.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('appuser')
 export class AppUser {
@@ -24,4 +31,14 @@ export class AppUser {
 
   @OneToMany(() => Post, (post) => post.appUser)
   posts: Array<Post>;
+
+  @ManyToMany(() => Post, (post) => post.appUser, { onDelete: 'CASCADE' })
+  @JoinTable({
+    name: 'SavedPost',
+    joinColumn: {
+      name: 'appUserId',
+      referencedColumnName: 'id',
+    },
+  })
+  savedPosts: Array<Post>;
 }
