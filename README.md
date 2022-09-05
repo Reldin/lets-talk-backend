@@ -15,7 +15,7 @@
 ## Description
 
 letstalk-backend is a backend for a reddit style SPA website. It's a personal hobby project of mine.
-The project uses Nest framework with TypeScript. It also uses TypeORM for Object Relational Mapping and has only been tested on MySQL and MariaDB with InnoDB engine. The frontend is in another repository: [Frontend](https://github.com/Reldin/lets-talk).
+The project uses Nest framework with TypeScript. It also uses TypeORM for Object Relational Mapping. The frontend is in another repository: [Frontend](https://github.com/Reldin/lets-talk).
 
 ## Installation
 
@@ -25,13 +25,15 @@ $ npm install
 
 ## Setup
 
-It requires a ".env.stage.dev" file for the npm run start:dev script with the following keys:
-DB_HOST=
-DB_PORT=
-DB_USERNAME=
-DB_Password=
-DB_DATABASE=
-SECRET=
+The project requires a ".env.stage.dev" file for the npm run start:dev script with the following keys:
+<ul>
+<li>DB_HOST=</li>
+<li>DB_PORT=</li>
+<li>DB_USERNAME=</li>
+<li>DB_Password=</li>
+<li>DB_DATABASE=</li>
+<li>SECRET=</li>
+</ul>
 
 If the configService does not work for you. You can hard code it to use the basic .env file in the app.module files "envFilePath". Then you have to start it with npm run start.
 
@@ -39,7 +41,7 @@ The project by default uses the port 3001 and can be changed at the main.ts file
 
 ## Database
 
-The project uses mysql and I have personally only tested with MariaDB for the schemas.
+The project uses mysql. Other databases can be used by modifying the app.module.ts file and installing the necessary packages, but I can't quarantee that they will work out of the box. 
 
 Google docs link below for more information about the database:
 [Database Schemas and SQL script content](https://docs.google.com/document/d/11Ak0kc4MBJfJN8vVazWv--X42oSTY8Km5mqAA_62m8U)
