@@ -1,7 +1,3 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
 ## Table of contents
 * [Description](#description)
 * [Installation](#installation)
@@ -9,8 +5,6 @@
 * [Database](#database)
 * [Running the app](#running-the-app)
 * [Test](#test)
-* [Support](#support)
-* [License](#license)
 
 ## Description
 
@@ -71,11 +65,3 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## License
-
-Nest is [MIT licensed](LICENSE).
