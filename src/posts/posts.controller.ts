@@ -1,10 +1,8 @@
 import {
-  Body,
   Controller,
   Delete,
   Get,
   Param,
-  Req,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -12,8 +10,6 @@ import { AppUser } from 'src/auth/dao/appuser.entity';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { Category } from './dao/category.entity';
 import { Post } from './dao/post.entity';
-import { Topic } from './dao/topic.entity';
-import { getCategoryTopics } from './dto/getCategoryTopic';
 import { GetTopicWithPostDto } from './dto/getTopicWithPost';
 import { PostsService } from './posts.service';
 
@@ -50,7 +46,7 @@ export class PostsController {
     return this.postsService.getTopicPosts();
   }
 
-  @Get('/test')
+  @Get('/savedposts')
   getSavedPosts(): Promise<any> {
     return this.postsService.getSavedPosts();
   }

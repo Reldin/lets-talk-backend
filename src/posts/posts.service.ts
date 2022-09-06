@@ -1,12 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { createQuery } from 'mysql2/typings/mysql/lib/Connection';
 import { AppUser } from 'src/auth/dao/appuser.entity';
-import { Any, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Category } from './dao/category.entity';
 import { Post } from './dao/post.entity';
 import { Topic } from './dao/topic.entity';
-import { getCategoryTopics } from './dto/getCategoryTopic';
 import { GetTopicWithPostDto } from './dto/getTopicWithPost';
 
 @Injectable()
@@ -37,13 +35,6 @@ export class PostsService {
   }
 
   async getCategoryTopics(categoryId: number): Promise<GetTopicWithPostDto[]> {
-    const rawtest = await this.topicRepository
-      .createQueryBuilder('topic')
-      .leftJoinAndSelect('topic.posts', 'post')
-      .limit(5)
-      .where('topic.categoryId = :categoryId', { categoryId })
-      .getSql();
-
     console.time('regular');
     const found = await this.topicRepository
       .createQueryBuilder('topic')
