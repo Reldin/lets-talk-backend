@@ -35,7 +35,6 @@ export class PostsService {
   }
 
   async getCategoryTopics(categoryId: number): Promise<GetTopicWithPostDto[]> {
-    console.time('regular');
     const found = await this.topicRepository
       .createQueryBuilder('topic')
       .leftJoinAndSelect('topic.posts', 'post')
@@ -43,11 +42,9 @@ export class PostsService {
       .limit(5)
       .where('topic.categoryId = :categoryId', { categoryId })
       .getMany();
-    console.timeEnd('regular');
     if (!found) {
       throw new NotFoundException();
     }
-    // console.log('topics found ' + JSON.stringify(found));
     return found;
   }
 
