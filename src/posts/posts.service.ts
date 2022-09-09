@@ -35,10 +35,6 @@ export class PostsService {
   }
 
   async getCategoryTopics(categoryId: number): Promise<GetTopicWithPostDto[]> {
-<<<<<<< HEAD
-    console.time('regular');
-=======
->>>>>>> beta-branch
     const found = await this.topicRepository
       .createQueryBuilder('topic')
       .leftJoinAndSelect('topic.posts', 'post')
