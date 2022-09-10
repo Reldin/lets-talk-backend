@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AppUser } from 'src/auth/dao/appuser.entity';
 import { Repository } from 'typeorm';
@@ -6,6 +10,7 @@ import { Category } from './dao/category.entity';
 import { Post } from './dao/post.entity';
 import { Topic } from './dao/topic.entity';
 import { GetTopicWithPostDto } from './dto/getTopicWithPost';
+import { NewCategoryDto } from './dto/new-category.dto';
 import { NewPostDto } from './dto/new-post.dto';
 
 @Injectable()
@@ -108,10 +113,32 @@ export class PostsService {
     });
 
     if (!result) {
-      return; // Throw an error if failure
+      return; // Should throw an error if failure?
     }
 
     // return the new post, so it can be added to the posts array locally?
     // If username is known in frontend, doesn't really need to return it.
+  }
+
+  async addCategory(newCategory: NewCategoryDto, user: AppUser): Promise<void> {
+    const { name } = newCategory;
+    const { id } = user;
+    if (await this.getCategoryByName(name)) {
+      throw new ConflictException('Category already exists');
+    }
+    const result = await this.categoryRepository.save({
+      name,
+      appUserId: id,
+    });
+
+    if (!result) {
+      return; // Should throw an error if failure?
+    }
+  }
+
+  async getCategoryByName(name: string): Promise<boolean> {
+    const found = await this.categoryRepository.findOne({ where: { name } });
+    if (!found) return false;
+    return true;
   }
 }
