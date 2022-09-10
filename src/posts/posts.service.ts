@@ -6,6 +6,7 @@ import { Category } from './dao/category.entity';
 import { Post } from './dao/post.entity';
 import { Topic } from './dao/topic.entity';
 import { GetTopicWithPostDto } from './dto/getTopicWithPost';
+import { NewPostDto } from './dto/new-post.dto';
 
 @Injectable()
 export class PostsService {
@@ -39,7 +40,6 @@ export class PostsService {
       .createQueryBuilder('topic')
       .leftJoinAndSelect('topic.posts', 'post')
       .leftJoinAndSelect('post.appUser', 'appUser')
-      .limit(5)
       .where('topic.categoryId = :categoryId', { categoryId })
       .getMany();
     if (!found) {
@@ -96,5 +96,22 @@ export class PostsService {
 
     console.log(found);
     return found;
+  }
+
+  async addPost(newPost: NewPostDto, user: AppUser): Promise<void> {
+    const { topicId, message } = newPost;
+    const { id } = user;
+    const result = await this.postRepository.save({
+      appUserId: id,
+      topicId,
+      message,
+    });
+
+    if (!result) {
+      return; // Throw an error if failure
+    }
+
+    // return the new post, so it can be added to the posts array locally?
+    // If username is known in frontend, doesn't really need to return it.
   }
 }

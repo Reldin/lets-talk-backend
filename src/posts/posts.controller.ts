@@ -2,15 +2,18 @@ import {
   Controller,
   Delete,
   Get,
+  Post,
   Param,
   UseGuards,
+  Body,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AppUser } from 'src/auth/dao/appuser.entity';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { Category } from './dao/category.entity';
-import { Post } from './dao/post.entity';
+import { Post as post } from './dao/post.entity';
 import { GetTopicWithPostDto } from './dto/getTopicWithPost';
+import { NewPostDto } from './dto/new-post.dto';
 import { PostsService } from './posts.service';
 
 @Controller('posts')
@@ -42,12 +45,21 @@ export class PostsController {
   }
 
   @Get('/categories/category/topic/:id')
-  getTopicPosts(): Promise<Post[]> {
+  getTopicPosts(): Promise<post[]> {
     return this.postsService.getTopicPosts();
   }
 
   @Get('/savedposts')
   getSavedPosts(): Promise<any> {
     return this.postsService.getSavedPosts();
+  }
+
+  @Post('/post')
+  @UseGuards(AuthGuard())
+  addPost(
+    @Body() newPost: NewPostDto,
+    @GetUser() user: AppUser,
+  ): Promise<void> {
+    return this.postsService.addPost(newPost, user);
   }
 }
