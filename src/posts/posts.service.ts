@@ -12,6 +12,7 @@ import { Topic } from './dao/topic.entity';
 import { GetTopicWithPostDto } from './dto/getTopicWithPost';
 import { NewCategoryDto } from './dto/new-category.dto';
 import { NewPostDto } from './dto/new-post.dto';
+import { NewTopicDto } from './dto/new-topic.dto';
 
 @Injectable()
 export class PostsService {
@@ -36,7 +37,6 @@ export class PostsService {
     if (!found) {
       throw new NotFoundException();
     }
-    console.log('categoryName ' + found);
     return found.name;
   }
 
@@ -50,6 +50,7 @@ export class PostsService {
     if (!found) {
       throw new NotFoundException();
     }
+
     return found;
   }
 
@@ -136,9 +137,34 @@ export class PostsService {
     }
   }
 
-  async getCategoryByName(name: string): Promise<boolean> {
+  private async getCategoryByName(name: string): Promise<boolean> {
     const found = await this.categoryRepository.findOne({ where: { name } });
     if (!found) return false;
     return true;
+  }
+  private async getTopicByName(
+    categoryId: number,
+    title: string,
+  ): Promise<boolean> {
+    const found = await this.topicRepository.findOne({
+      where: { categoryId, title },
+    });
+    if (!found) return false;
+    return true;
+  }
+
+  async addTopic(newTopic: NewTopicDto, user: AppUser): Promise<void> {
+    const { categoryId, title } = newTopic;
+    if (await this.getTopicByName(categoryId, title)) {
+      throw new ConflictException(
+        'This topic already exists on this category.',
+      );
+    }
+    const { id } = user;
+    this.topicRepository.save({
+      categoryId,
+      appUserId: id,
+      title,
+    });
   }
 }
