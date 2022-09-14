@@ -13,7 +13,9 @@ import { GetUser } from 'src/auth/get-user.decorator';
 import { Category } from './dao/category.entity';
 import { Post as post } from './dao/post.entity';
 import { GetTopicWithPostDto } from './dto/getTopicWithPost';
+import { NewCategoryDto } from './dto/new-category.dto';
 import { NewPostDto } from './dto/new-post.dto';
+import { NewTopicDto } from './dto/new-topic.dto';
 import { PostsService } from './posts.service';
 
 @Controller('posts')
@@ -61,5 +63,29 @@ export class PostsController {
     @GetUser() user: AppUser,
   ): Promise<void> {
     return this.postsService.addPost(newPost, user);
+  }
+
+  @Post('/categories/category')
+  @UseGuards(AuthGuard())
+  addCategory(
+    @Body() newCategory: NewCategoryDto,
+    @GetUser() user: AppUser,
+  ): Promise<void> {
+    return this.postsService.addCategory(newCategory, user);
+  }
+
+  @Post('/categories/category/topic')
+  @UseGuards(AuthGuard())
+  addTopic(
+    @Body() newTopic: NewTopicDto,
+    @GetUser() user: AppUser,
+  ): Promise<void> {
+    return this.postsService.addTopic(newTopic, user);
+  }
+
+  @Delete('/post/:id')
+  @UseGuards(AuthGuard())
+  deletePost(@Param('id') id: number, @GetUser() user: AppUser): Promise<void> {
+    return this.postsService.deletePost(id, user);
   }
 }
