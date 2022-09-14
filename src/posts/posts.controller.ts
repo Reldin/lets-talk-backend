@@ -82,4 +82,10 @@ export class PostsController {
   ): Promise<void> {
     return this.postsService.addTopic(newTopic, user);
   }
+
+  @Delete('/post/:id')
+  @UseGuards(AuthGuard())
+  deletePost(@Param('id') id: number, @GetUser() user: AppUser): Promise<void> {
+    return this.postsService.deletePost(id, user);
+  }
 }

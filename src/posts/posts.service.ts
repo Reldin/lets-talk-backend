@@ -156,8 +156,9 @@ export class PostsService {
   async addTopic(newTopic: NewTopicDto, user: AppUser): Promise<void> {
     const { categoryId, title } = newTopic;
     if (await this.getTopicByName(categoryId, title)) {
+      // Instead of template literal, could be handled in the frontend.
       throw new ConflictException(
-        'This topic already exists on this category.',
+        `Topic \"${title}\" already exists on this category.`,
       );
     }
     const { id } = user;
@@ -166,5 +167,25 @@ export class PostsService {
       appUserId: id,
       title,
     });
+  }
+
+  private async findPost(id: number, appUserId: number): Promise<void> {
+    const found = this.postRepository.findOne({ where: { id, appUserId } });
+    if (!found) {
+      throw new NotFoundException('Could not find user.');
+    }
+  }
+
+  async deletePost(id: number, user: AppUser): Promise<void> {
+    const appUserId = user.id;
+
+    await this.findPost(id, appUserId);
+    const found = await this.postRepository.delete({
+      id,
+      appUserId,
+    });
+    if (found.affected === 0) {
+      throw new NotFoundException('Could not delete post.');
+    }
   }
 }
