@@ -50,6 +50,7 @@ export class PostsService {
     if (!found) {
       throw new NotFoundException();
     }
+    console.log(found);
 
     return found;
   }
@@ -82,9 +83,16 @@ export class PostsService {
       .getOne();
 
     if (!foundTopicWithUserId) {
-      throw new NotFoundException();
+      throw new NotFoundException('Could not delete topic.');
     }
-    this.topicRepository.delete({ id });
+    console.log(
+      this.topicRepository
+        .createQueryBuilder('topic')
+        .delete()
+        .where('topic.id = id')
+        .getSql(),
+    );
+    this.topicRepository.remove(foundTopicWithUserId);
   }
 
   async getTopicPosts(): Promise<Post[]> {

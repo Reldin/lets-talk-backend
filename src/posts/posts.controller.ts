@@ -37,6 +37,11 @@ export class PostsController {
     return this.postsService.getCategoryTopics(id);
   }
 
+  @Get('/categories/topic/:id')
+  getCategoryTopicName(@Param('id') id: number): Promise<string> {
+    return this.postsService.getUsername(id);
+  }
+
   @Delete('/categories/category/:id')
   @UseGuards(AuthGuard())
   deleteCategoryTopic(

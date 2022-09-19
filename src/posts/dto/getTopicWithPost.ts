@@ -15,10 +15,5 @@ export class GetTopicWithPostDto {
     appUserId: number;
 
     topicId: number;
-  };
-  category: {
-    id: number;
-    name: string;
-    appUserId: number;
-  };
+  }[];
 }

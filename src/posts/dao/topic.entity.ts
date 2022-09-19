@@ -33,5 +33,5 @@ export class Topic {
   appUser: AppUser;
 
   @OneToMany(() => Post, (post) => post.topic)
-  posts: Post;
+  posts: Array<Post>;
 }
