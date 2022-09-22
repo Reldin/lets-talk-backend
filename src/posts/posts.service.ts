@@ -9,7 +9,7 @@ import { Repository } from 'typeorm';
 import { Category } from './dao/category.entity';
 import { Post } from './dao/post.entity';
 import { Topic } from './dao/topic.entity';
-import { GetTopicWithPostDto } from './dto/getTopicWithPost';
+import { GetTopicWithPostDto } from './dto/getTopicWithPost.dto';
 import { NewCategoryDto } from './dto/new-category.dto';
 import { NewPostDto } from './dto/new-post.dto';
 import { NewTopicDto } from './dto/new-topic.dto';
@@ -43,6 +43,7 @@ export class PostsService {
   async getCategoryTopics(categoryId: number): Promise<GetTopicWithPostDto[]> {
     const found = await this.topicRepository
       .createQueryBuilder('topic')
+      .leftJoinAndSelect('topic.appUser', 'user')
       .leftJoinAndSelect('topic.posts', 'post')
       .leftJoinAndSelect('post.appUser', 'appUser')
       .where('topic.categoryId = :categoryId', { categoryId })
@@ -51,6 +52,7 @@ export class PostsService {
       throw new NotFoundException();
     }
     console.log(found);
+    console.log('post info ', found[0].posts);
 
     return found;
   }
