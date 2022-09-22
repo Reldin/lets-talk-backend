@@ -29,13 +29,16 @@ export class Post {
   @JoinColumn({ name: 'appUserId' })
   appUser: AppUser;
 
-  @ManyToOne(() => Topic, (topic) => topic.posts)
+  @ManyToOne(() => Topic, (topic) => topic.posts, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'topicId' })
   topic: Topic;
 
-  @ManyToMany(() => AppUser, (appUser) => appUser.savedPosts, {})
+  @ManyToMany(() => AppUser, (appUser) => appUser.savedPosts)
   @JoinTable({
-    name: 'SavedPost',
+    name: 'savedpost',
     joinColumn: {
       name: 'postId',
       referencedColumnName: 'id',

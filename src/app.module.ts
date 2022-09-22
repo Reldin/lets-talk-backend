@@ -23,6 +23,7 @@ import { AuthModule } from './auth/auth.module';
           type: 'mysql',
           autoLoadEntities: true,
           synchronize: false,
+          logging: true,
           host: configService.get('DB_HOST'),
           port: configService.get('DB_PORT'),
           username: configService.get('DB_USERNAME'),

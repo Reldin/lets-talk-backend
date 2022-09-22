@@ -34,9 +34,8 @@ export class AppUser {
 
   @ManyToMany(() => Post, (post) => post.appUser, { onDelete: 'CASCADE' })
   @JoinTable({
-    name: 'SavedPost',
+    name: 'savedpost',
     joinColumn: {
-      name: 'appUserId',
       referencedColumnName: 'id',
     },
   })

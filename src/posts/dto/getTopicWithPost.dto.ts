@@ -1,3 +1,5 @@
+import { AppUser } from 'src/auth/dao/appuser.entity';
+
 export class GetTopicWithPostDto {
   id: number;
 
@@ -7,6 +9,10 @@ export class GetTopicWithPostDto {
 
   appUserId: number;
 
+  appUser: {
+    username: string;
+  };
+
   posts: {
     id: number;
 
@@ -15,10 +21,5 @@ export class GetTopicWithPostDto {
     appUserId: number;
 
     topicId: number;
-  };
-  category: {
-    id: number;
-    name: string;
-    appUserId: number;
-  };
+  }[];
 }

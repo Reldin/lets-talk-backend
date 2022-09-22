@@ -12,7 +12,7 @@ import { AppUser } from 'src/auth/dao/appuser.entity';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { Category } from './dao/category.entity';
 import { Post as post } from './dao/post.entity';
-import { GetTopicWithPostDto } from './dto/getTopicWithPost';
+import { GetTopicWithPostDto } from './dto/getTopicWithPost.dto';
 import { NewCategoryDto } from './dto/new-category.dto';
 import { NewPostDto } from './dto/new-post.dto';
 import { NewTopicDto } from './dto/new-topic.dto';
@@ -35,6 +35,11 @@ export class PostsController {
   @Get('/categories/:id')
   getCategoryTopics(@Param('id') id: number): Promise<GetTopicWithPostDto[]> {
     return this.postsService.getCategoryTopics(id);
+  }
+
+  @Get('/categories/topic/:id')
+  getCategoryTopicName(@Param('id') id: number): Promise<string> {
+    return this.postsService.getUsername(id);
   }
 
   @Delete('/categories/category/:id')
